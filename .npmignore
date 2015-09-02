@@ -1,0 +1,6 @@
+###模组
+node_modules
+
+###工程
+.idea
+IACG.iml

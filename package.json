@@ -1,0 +1,26 @@
+{
+  "name": "iacg",
+  "description": "zodiac's acg",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "./node_modules/.bin/nodemon .",
+    "online": "bin/post-deploy.sh",
+    "stop": "pm2 delete all"
+  },
+  "keywords": [
+    "acg"
+  ],
+  "author": "zodiac",
+  "license": "MIT",
+  "dependencies": {
+    "config": "^1.15.0",
+    "gulp": "^3.9.0",
+    "koa": "^1.0.0",
+    "koa-proxy": "^0.3.0",
+    "koa-static": "^1.4.9",
+    "mysql": "^2.9.0",
+    "nodemon": "^1.4.1",
+    "pm2": "^0.14.7"
+  }
+}

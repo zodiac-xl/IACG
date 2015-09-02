@@ -1,0 +1,21 @@
+{
+  "apps" : [{
+    "name"               : "IACG",
+    "script"             : "index.js",
+    "env": {
+      "COMMON_VARIABLE"  : "true",
+      "NODE_ENV"         : "production"
+    },
+    "exec_interpreter"   : "node",
+    "node_args"          : "--harmony",
+    "exec_mode"          : "cluster_mode",
+    "instances"          : 2,
+    "log_date_format"    : "YYYY-MM-DD HH:mm Z",
+    "max_memory_restart" : "4G",
+    "merge_logs"         : true,
+    "watch"              : false,
+    "error_file"         : "logs/stderr.log",
+    "out_file"           : "logs/stdout.log",
+    "pid_file"           : "logs/iacg.pid"
+  }]
+}
