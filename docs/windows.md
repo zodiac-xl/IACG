@@ -20,3 +20,10 @@
 >如果需要require全局包，可以先npm link到local。
 
 
+
+###windows下无法安装n 切换到iojs
+
+启动项目使用node --harmony index.js  而不是用nodemon启动
+
+
+
