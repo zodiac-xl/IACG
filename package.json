@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "./node_modules/.bin/nodemon .",
+    "windev":"node --harmony index.js",
     "online": "bin/post-deploy.sh",
     "stop": "pm2 delete all"
   },
