@@ -17,6 +17,26 @@ app.use(proxy(config.proxy));
 // serve static files
 app.use(koaStatic(config.path.static));
 
+// get env
+app.use(function*(next) {
+    this.env = app.env;
+    yield next;
+});
+
+// check ajax request
+app.use(function*(next) {
+    const requestWith = this.get('X-Requested-With');
+    this.ajax = (requestWith == 'XMLHttpRequest');
+    yield next;
+});
+
+
+// response
+app.use(function *() {
+    this.body = "zz";
+    console.log(this.body);
+});
+
 
 var pool = mysql.createPool({
     host: 'localhost',
@@ -39,21 +59,6 @@ pool.getConnection(function (err, conn) {
         conn.release();
     });
 });
-
-
-// get env
-app.use(function*(next) {
-    this.env = app.env;
-    yield next;
-});
-
-
-// response
-app.use(function *() {
-    this.body = "zz";
-    console.log(this.body);
-});
-
 
 
 
