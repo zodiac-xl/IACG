@@ -1,29 +1,29 @@
-###windowsÏÂÀàËÆsudoµÄÃüÁî
+###windowsä¸‹ç±»ä¼¼sudoçš„å‘½ä»¤
 
     runas /user:user_name program.exe
 
->user_nameÊÇÒªÊ¹ÓÃÄÄ¸öÓÃ»§ÔËĞĞ¸Ã³ÌĞò¾ÍĞ´ÉÏÄÄ¸öÓÃ»§Ãû£¬program.exeÊÇ³ÌĞòÃû£¬Èç¹ûprogram.exe²»ÔÚsystem32Ä¿Â¼ÏÂµÄ»°£¬ĞèÒªÖ¸Ã÷¾ßÌåÂ·¾¶¡£
+>user_nameæ˜¯è¦ä½¿ç”¨å“ªä¸ªç”¨æˆ·è¿è¡Œè¯¥ç¨‹åºå°±å†™ä¸Šå“ªä¸ªç”¨æˆ·åï¼Œprogram.exeæ˜¯ç¨‹åºåï¼Œå¦‚æœprogram.exeä¸åœ¨system32ç›®å½•ä¸‹çš„è¯ï¼Œéœ€è¦æŒ‡æ˜å…·ä½“è·¯å¾„ã€‚
 
 
-###npm -g °²×°µÄmoduleÎŞ·¨require£¿
-####·½·¨Ò»
-ÎÒµÄµçÄÔ->ÊôĞÔ-> ¸ß¼¶-> »·¾³±äÁ¿, Ìí¼ÓÒ»¸ö»·¾³±äÁ¿ÃûÎª NODE_PATH , ½«ÆäÖµÉèÖÃÎªÈ«¾ÖÄ£¿éµÄ¸ùÄ¿Â¼.
+###npm -g å®‰è£…çš„moduleæ— æ³•requireï¼Ÿ
+####æ–¹æ³•ä¸€
+æˆ‘çš„ç”µè„‘->å±æ€§-> é«˜çº§-> ç¯å¢ƒå˜é‡, æ·»åŠ ä¸€ä¸ªç¯å¢ƒå˜é‡åä¸º NODE_PATH , å°†å…¶å€¼è®¾ç½®ä¸ºå…¨å±€æ¨¡å—çš„æ ¹ç›®å½•.
 
     C:\Program Files\nodejs\node_modules
 
-####·½·¨¶ş
-²»ÒªÈ¥¸Ä NODE_PATH£¬npm install -g ÕÒ²»µ½ÊÇÕı³£µÄ¡£ÔÚÄãĞèÒª babel µÄÄ¿Â¼Ö´ĞĞ npm link babel£¬ÊÖ¶¯ÈÃ¸ÃÄ¿Â¼ÏÂµÄÎÄ¼ş¿ÉÒÔÕÒµ½ babel¡£
+####æ–¹æ³•äºŒ
+ä¸è¦å»æ”¹ NODE_PATHï¼Œnpm install -g æ‰¾ä¸åˆ°æ˜¯æ­£å¸¸çš„ã€‚åœ¨ä½ éœ€è¦ babel çš„ç›®å½•æ‰§è¡Œ npm link babelï¼Œæ‰‹åŠ¨è®©è¯¥ç›®å½•ä¸‹çš„æ–‡ä»¶å¯ä»¥æ‰¾åˆ° babelã€‚
 
     npm link babel
     W:\workspace\IACG\node_modules\babel -> C:\Users\zodaic\AppData\Roaming\npm\node_modules\babel
 
->Èç¹ûĞèÒªrequireÈ«¾Ö°ü£¬¿ÉÒÔÏÈnpm linkµ½local¡£
+>å¦‚æœéœ€è¦requireå…¨å±€åŒ…ï¼Œå¯ä»¥å…ˆnpm linkåˆ°localã€‚
 
 
 
-###windowsÏÂÎŞ·¨°²×°n ÇĞ»»µ½iojs
+###windowsä¸‹æ— æ³•å®‰è£…n åˆ‡æ¢åˆ°iojs
 
-Æô¶¯ÏîÄ¿Ê¹ÓÃnode --harmony index.js  ¶ø²»ÊÇÓÃnodemonÆô¶¯
+å¯åŠ¨é¡¹ç›®ä½¿ç”¨node --harmony index.js  è€Œä¸æ˜¯ç”¨nodemonå¯åŠ¨
 
 
 
