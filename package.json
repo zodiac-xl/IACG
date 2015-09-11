@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "./node_modules/.bin/nodemon .",
-    "windev":"node --harmony index.js",
+    "windev": "node --harmony index.js",
     "online": "bin/post-deploy.sh",
     "stop": "pm2 delete all"
   },
@@ -17,11 +17,18 @@
   "dependencies": {
     "config": "^1.15.0",
     "gulp": "^3.9.0",
+    "gulp-livereload": "^3.8.0",
+    "gulp-nodemon": "^2.0.4",
+    "gulp-util": "^3.0.6",
     "koa": "^1.0.0",
+    "koa-mongo": "^0.4.1",
     "koa-proxy": "^0.3.0",
+    "koa-router": "^5.1.2",
     "koa-static": "^1.4.9",
+    "lodash": "^3.10.1",
+    "mongodb": "^2.0.42",
     "mysql": "^2.9.0",
-    "nodemon": "^1.4.1",
-    "pm2": "^0.14.7"
+    "pm2": "^0.14.7",
+    "require-dir": "^0.3.0"
   }
 }

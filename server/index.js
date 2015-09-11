@@ -1,18 +1,38 @@
+//内置方法
 import fs from 'fs';
 import path from 'path';
+
+//配置
 import config from 'config';
+import routers from 'config';
 
+//工具
+import requireDir from 'require-dir';
+import _ from 'lodash';
+
+//服务
 import koa from 'koa';
-import proxy from 'koa-proxy';
+import koaProxy from 'koa-proxy';
 import koaStatic from 'koa-static';
+import mongo from 'koa-mongo';
 
-import mysql from 'mysql';
+
 
 const app = koa();
+const routes = requireDir('./routes');
 
+app.use(mongo({
+    host: 'localhost',
+    port: 9999,
+    db: 'test',
+    max: 100,
+    min: 1,
+    timeout: 30000,
+    log: false
+}));
 
 // pass proxy to upstream
-app.use(proxy(config.proxy));
+app.use(koaProxy(config.proxy));
 
 // serve static files
 app.use(koaStatic(config.path.static));
@@ -31,36 +51,11 @@ app.use(function*(next) {
 });
 
 
-// response
-app.use(function *() {
-    this.body = "zz";
-    console.log(this.body);
+//router
+_.forIn(routes, function (route, key) {
+    app.use(route.routes())
+        .use(route.allowedMethods());
 });
-
-
-var pool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'zodiac',
-    port: 3306
-});
-
-var selectSQL = 'select * from people limit 10';
-pool.getConnection(function (err, conn) {
-    if (err) console.log("POOL ==> " + err);
-
-    conn.query(selectSQL,function(err,rows){
-        if (err) console.log(err);
-        console.log("SELECT ==> ");
-        for (var i in rows) {
-            console.log(rows[i]);
-        }
-        conn.release();
-    });
-});
-
-
 
 export
 default app;

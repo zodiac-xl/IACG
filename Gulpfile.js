@@ -2,7 +2,6 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var nodemon = require('gulp-nodemon');
 var livereload = require('gulp-livereload');
-var runSequence = require('gulp-run-sequence');
 
 
 // default task
