@@ -1,8 +1,8 @@
-import gulp         from 'gulp'
-import gulpIf       from 'gulp-if'
-import gutil        from 'gulp-util'
-import nodemon         from 'gulp-nodemon'
-import livereload         from 'gulp-livereload'
+import gulp             from 'gulp'
+import gulpIf           from 'gulp-if'
+import gutil            from 'gulp-util'
+import nodemon          from 'gulp-nodemon'
+import livereload       from 'gulp-livereload'
 
 // default task
 gulp.task('default', [
