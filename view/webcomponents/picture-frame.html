@@ -1,0 +1,26 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="picture-frame">
+    <!-- scoped CSS for this element -->
+    <style>
+        span {
+            display: inline-block;
+            background-color: #ccc;
+            border-radius: 8px;
+            padding: 4px;
+
+        }
+    </style>
+    <template>
+        <span>
+            <!-- any children are rendered here -->
+            <content></content>
+        </span>
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: "picture-frame"
+    });
+</script>

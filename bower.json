@@ -1,0 +1,21 @@
+{
+  "name": "IACG",
+  "main": "index.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/zodiac-xl/IACG",
+  "authors": [
+    "zodiac <wuxiaolong@meituan.com>"
+  ],
+  "description": "zodiac's acg",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0"
+  }
+}
