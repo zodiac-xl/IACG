@@ -9,16 +9,28 @@
     "online": "bin/post-deploy.sh",
     "stop": "pm2 delete all"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zodiac-xl/IACG.git"
+  },
   "keywords": [
     "acg"
   ],
   "author": "zodiac",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zodiac-xl/IACG/issues"
+  },
+  "homepage": "https://github.com/zodiac-xl/IACG#readme",
   "dependencies": {
     "config": "^1.15.0",
     "gulp": "^3.9.0",
+    "gulp-hash": "^2.2.2",
+    "gulp-header": "^1.7.1",
+    "gulp-if": "^1.2.5",
     "gulp-livereload": "^3.8.0",
     "gulp-nodemon": "^2.0.4",
+    "gulp-uglify": "^1.4.1",
     "gulp-util": "^3.0.6",
     "koa": "^1.0.0",
     "koa-mongo": "^0.4.1",
@@ -26,9 +38,13 @@
     "koa-router": "^5.1.2",
     "koa-static": "^1.4.9",
     "lodash": "^3.10.1",
+    "mkdirp": "^0.5.1",
     "mongodb": "^2.0.42",
     "mysql": "^2.9.0",
     "pm2": "^0.14.7",
     "require-dir": "^0.3.0"
+  },
+  "devDependencies": {
+    "babel-core": "^5.8.24"
   }
 }

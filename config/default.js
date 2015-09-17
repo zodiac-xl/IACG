@@ -1,14 +1,15 @@
 import path from 'path';
 
-const rootPath = path.dirname(__dirname);
+let __root = (dir) => path.join(path.dirname(__dirname), dir);
 
-export
-default {
+export default Object.assign(require('../package.json'), {
     path: {
-        static: path.join(rootPath, 'static')
+        client: __root('client'),
+        public: __root('public')
     },
     proxy: {
         match: /^\/test/,
         host: 'http://piaofang.vip.sankuai.com'
-    }
-};
+    },
+    debug: false
+});

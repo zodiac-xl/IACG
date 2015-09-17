@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Enables checking of all commands
 set -e
 

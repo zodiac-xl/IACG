@@ -1,8 +1,8 @@
-var gulp = require('gulp');
-var gutil = require('gulp-util');
-var nodemon = require('gulp-nodemon');
-var livereload = require('gulp-livereload');
-
+import gulp         from 'gulp'
+import gulpIf       from 'gulp-if'
+import gutil        from 'gulp-util'
+import nodemon         from 'gulp-nodemon'
+import livereload         from 'gulp-livereload'
 
 // default task
 gulp.task('default', [
@@ -13,9 +13,9 @@ gulp.task('default', [
 // server
 gulp.task('server', function () {
     nodemon({
-        script: 'server.js'
+        script: 'index.js'
         , ext: 'html js'
-        , env: { 'NODE_ENV': 'development' }
+        , env: {'NODE_ENV': 'development'}
         , ignore: ['ignored.js']
     }).on('start', function () {
         gutil.log('nodemon start!');
