@@ -1,22 +1,14 @@
-import koaRouter from 'koa-router';
+import koaRouter        from 'koa-router';
 
+let test = koaRouter();
 
-var test = koaRouter();
+let users = [1, 2, 3];
 
-var users = [1, 2, 3];
 
 //router
 test
-    .param('user', function *(id, next) {
-        this.user = users[id];
-        if (!this.user) return this.status = 404;
-        yield next;
-    })
-    .get('/', function *(next) {
-        this.body = 'Hello World!';
-    })
-    .post('/users', function *(next) {
-        this.body = 'Hello World!';
+    .get('/users', function *(next) {
+        this.body="dsa";
     })
     .put('/users/:id', function *(next) {
         this.body = 'Hello World!';

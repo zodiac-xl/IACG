@@ -24,6 +24,7 @@
   "homepage": "https://github.com/zodiac-xl/IACG#readme",
   "dependencies": {
     "config": "^1.15.0",
+    "freemarker.js": "^1.2.1",
     "gulp": "^3.9.0",
     "gulp-hash": "^2.2.2",
     "gulp-header": "^1.7.1",

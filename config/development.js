@@ -1,4 +1,4 @@
 export
 default {
-    port: 3333
+    port: 2222
 };
