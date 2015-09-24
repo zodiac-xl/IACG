@@ -3,8 +3,8 @@
     webcomponents 引入 element
 -->
 <#assign pageConfig = {
-"id": "index",
-"class":"bd-home",
+"id": "blog-post",
+"class":"blog-post",
 "webcomponents":[
 "marked-element.html"
 ]

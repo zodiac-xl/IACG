@@ -10,11 +10,11 @@ import koaRouter        from 'koa-router';
 //
 import pathExists       from 'path-exists';
 
-let marked = koaRouter();
+let blog = koaRouter();
 
 
 //router
-marked
+blog
 
     .get('/blog', function *(next) {
         var categorys = require(path.join(config.path.static, "markdown/categorys"));
@@ -27,7 +27,7 @@ marked
         var mdPath = path.join(config.path.static, "markdown/posts/" + this.params.id + ".md");
 
         if (pathExists.sync(mdPath)) {
-            var md = fs.readFileSync(mdPath).toString('utf-8');
+            var md = encodeURIComponent(fs.readFileSync(mdPath).toString('utf-8'));
             this.body = this.fm.renderSync("pages/blog/marked.ftl", {md: md});
         } else {
             this.redirect('/404');
@@ -35,4 +35,4 @@ marked
         }
     });
 export
-default marked;
+default blog;

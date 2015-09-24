@@ -1,4 +1,4 @@
-<link rel="import" href="/static/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/polymer/polymer.html">
 
 <dom-module id="marked-element">
     <style>
@@ -406,7 +406,7 @@
     </style>
     <template>
         <div>
-            <content>{{md}}</content>
+            <content></content>
         </div>
     </template>
 </dom-module>
@@ -419,7 +419,7 @@
             Polymer.Base.classFollows("hide", null, Polymer.dom(this));
         },
         created: function () {
-            var md = this.innerText;
+            var md = decodeURIComponent(this.innerText);
             Polymer.dom(this).innerHTML = markdown.toHTML(md);
             Polymer.Base.classFollows("hide", Polymer.dom(this), null);
         }

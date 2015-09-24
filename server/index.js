@@ -42,7 +42,7 @@ let fm = new Freemarker({
 app.use(koaProxy(config.proxy));
 
 // serve static files
-app.use(koaStatic(path.dirname(__dirname)));
+app.use(koaStatic(config.path.static));
 
 // get env
 app.use(function*(next) {
@@ -73,7 +73,7 @@ _.forIn(routes, function (route, key) {
 //404 and error
 app.use(function *(next) {
     if (this.status == 404) {
-        this.redirect('/404');
+        //this.redirect('/404');
     } else {
         try {
             yield next;

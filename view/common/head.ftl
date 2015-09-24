@@ -14,20 +14,20 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1"><#--missing viewport  tag will enables responsiveness-->
 
-    <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico"/>
-    <link rel="stylesheet" href="/static/css/reset.css"/>
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico"/>
+    <link rel="stylesheet" href="/css/reset.css"/>
 
 <#-- 给 Web Components 使用 Polyfills 以便支持旧的浏览器 -->
-    <script src="/static/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <script src="/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 
 <#--markdown js-->
-    <script src="/static/js/markdown.js"></script>
+    <script src="/js/markdown.js"></script>
 
 
 <#--Web Components依赖-->
 <#if pageConfig.webcomponents??>
     <#list pageConfig.webcomponents as webcomponent>
-        <link rel="import" href="/view/webcomponents/${webcomponent}">
+        <link rel="import" href="/webcomponents/${webcomponent}">
     </#list>
 </#if>
 </head>

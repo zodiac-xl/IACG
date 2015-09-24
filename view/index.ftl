@@ -3,8 +3,8 @@
     webcomponents 引入 element
 -->
 <#assign pageConfig = {
-"id": "404"
+"id": "index"
 }>
 <#include "/common/head.ftl">
-no
+index
 <#include "/common/foot.ftl">
