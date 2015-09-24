@@ -121,7 +121,7 @@ gulp.task('postCss', function () {
         mqpacker,
         csswring
     ];
-    return gulp.src(__root("develop/**/*.css"))
+    return gulp.src(__root("develop/**/*.scss"))
         .pipe(sourcemaps.init())
         .pipe(postcss(processors))
         .pipe(sourcemaps.write('.'))
