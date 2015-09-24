@@ -1,6 +1,9 @@
 ###模组
 node_modules
 
+###bower
+bower_components
+
 ###工程
 .idea
 IACG.iml

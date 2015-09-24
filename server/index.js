@@ -4,7 +4,6 @@ import path from 'path';
 
 //配置
 import config from 'config';
-import routers from 'config';
 
 //工具
 import requireDir from 'require-dir';
@@ -29,15 +28,15 @@ let fm = new Freemarker({
 });
 
 
-app.use(mongo({
-    host: 'localhost',
-    port: 9998,
-    db: 'test',
-    max: 100,
-    min: 1,
-    timeout: 30000,
-    log: false
-}));
+//app.use(mongo({
+//    host: 'localhost',
+//    port: 9999,
+//    db: 'test',
+//    max: 100,
+//    min: 1,
+//    timeout: 30000,
+//    log: false
+//}));
 
 // pass proxy to upstream
 app.use(koaProxy(config.proxy));
@@ -58,10 +57,23 @@ app.use(function*(next) {
     yield next;
 });
 
+
+// freemarker
+app.use(function*(next) {
+    this.fm = fm;
+    yield next;
+});
+
+//router
+_.forIn(routes, function (route, key) {
+    app.use(route.routes())
+        .use(route.allowedMethods());
+});
+
 //404 and error
 app.use(function *(next) {
-    if (this.status == "404") {
-        this.body = 'Hello World 404';
+    if (this.status == 404) {
+        this.redirect('/404');
     } else {
         try {
             yield next;
@@ -76,18 +88,6 @@ app.use(function *(next) {
     }
 });
 
-
-// freemarker
-app.use(function*(next) {
-    this.fm = fm;
-    yield next;
-});
-
-//router
-_.forIn(routes, function (route, key) {
-    app.use(route.routes())
-        .use(route.allowedMethods());
-});
 
 export
 default app;

@@ -23,7 +23,11 @@
   },
   "homepage": "https://github.com/zodiac-xl/IACG#readme",
   "dependencies": {
+    "autoprefixer": "^6.0.3",
     "config": "^1.15.0",
+    "css-mqpacker": "^4.0.0",
+    "csswring": "^4.0.0",
+    "esformatter": "^0.7.3",
     "freemarker.js": "^1.2.1",
     "gulp": "^3.9.0",
     "gulp-hash": "^2.2.2",
@@ -31,6 +35,8 @@
     "gulp-if": "^1.2.5",
     "gulp-livereload": "^3.8.0",
     "gulp-nodemon": "^2.0.4",
+    "gulp-postcss": "^6.0.0",
+    "gulp-sourcemaps": "^1.5.2",
     "gulp-uglify": "^1.4.1",
     "gulp-util": "^3.0.6",
     "koa": "^1.0.0",
@@ -39,13 +45,17 @@
     "koa-router": "^5.1.2",
     "koa-static": "^1.4.9",
     "lodash": "^3.10.1",
-    "mkdirp": "^0.5.1",
     "mongodb": "^2.0.42",
     "mysql": "^2.9.0",
+    "path-exists": "^2.0.0",
     "pm2": "^0.14.7",
-    "require-dir": "^0.3.0"
+    "require-dir": "^0.3.0",
+    "run-sequence": "^1.1.4",
+    "walk": "^2.3.9"
   },
   "devDependencies": {
-    "babel-core": "^5.8.24"
+    "babel-core": "^5.8.24",
+    "del": "^2.0.2",
+    "postcss-nesting": "^2.0.4"
   }
 }

@@ -17,14 +17,18 @@
     <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico"/>
     <link rel="stylesheet" href="/static/css/reset.css"/>
 
-    <!-- 给 Web Components 使用 Polyfills 以便支持旧的浏览器 -->
-    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+<#-- 给 Web Components 使用 Polyfills 以便支持旧的浏览器 -->
+    <script src="/static/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 
-    <!--Web Components依赖-->
-    <#if pageConfig.webcomponents??>
-        <#list pageConfig.webcomponents as webcomponent>
-            <link rel="import" href="/view/webcomponents/${webcomponent}">
-        </#list>
-    </#if>
+<#--markdown js-->
+    <script src="/static/js/markdown.js"></script>
+
+
+<#--Web Components依赖-->
+<#if pageConfig.webcomponents??>
+    <#list pageConfig.webcomponents as webcomponent>
+        <link rel="import" href="/view/webcomponents/${webcomponent}">
+    </#list>
+</#if>
 </head>
 <body class="${pageConfig.class!}" id="${pageConfig.id!}">
