@@ -6,5 +6,5 @@
 "id": "index"
 }>
 <#include "/common/head.ftl">
-index
+<#include "/common/header.ftl">
 <#include "/common/foot.ftl">

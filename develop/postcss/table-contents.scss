@@ -1,0 +1,24 @@
+:host ::content .table-contents{
+  font-size: 14px;
+  background: #f4f7f8;
+  .heading{
+    display: block;
+    padding: 10px;
+    cursor: pointer;
+  }
+  a:active, a:focus, a:hover {
+    text-decoration: underline;
+  }
+
+  ul, ol {
+    margin-left: 30px;
+    list-style: initial;
+    padding-bottom: 20px;
+  }
+  li {
+    position: relative;
+    padding-top: 10px;
+  }
+
+}
+

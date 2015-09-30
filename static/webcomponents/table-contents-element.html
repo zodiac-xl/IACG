@@ -1,0 +1,182 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<dom-module id="table-contents-element">
+    <template>
+        <style>
+            :host ::content .table-contents{
+                font-size: 14px;
+                background: #f4f7f8;
+
+            }
+            :host ::content .table-contents .heading{
+                display: block;
+                padding: 10px;
+                cursor: pointer;
+
+            }
+            :host ::content .table-contents a:active, :host ::content .table-contents a:focus, :host ::content .table-contents a:hover {
+                text-decoration: underline;
+
+            }
+            :host ::content .table-contents ul, :host ::content .table-contents ol {
+                margin-left: 30px;
+                list-style: initial;
+                padding-bottom: 20px;
+
+            }
+            :host ::content .table-contents li {
+                position: relative;
+                padding-top: 10px;
+
+            }
+
+
+
+        </style>
+        <div>
+            <div class="table-contents">
+                <span class="heading" on-click="toggle">在本文章中</span>
+            </div>
+        </div>
+    </template>
+</dom-module>
+
+<script>
+    'use strict';
+    Polymer({
+        is: 'table-contents-element',
+        attached: function () {
+            this.async(function () {
+                doMdToc($(".table-contents"));
+
+            });
+        },
+        properties: {
+            /**
+             * Set opened to true to show the collapse element and to false to hide it.
+             *
+             * @attribute opened
+             */
+            opened: {
+                type: Boolean,
+                value: true,
+                notify: true,
+                observer: '_openedChanged'
+            }
+        },
+        /**
+         * Toggle the opened state.
+         *
+         * @method toggle
+         */
+        toggle: function () {
+            this.opened = !this.opened;
+        },
+        show: function () {
+            this.opened = true;
+        },
+        hide: function () {
+            this.opened = false;
+        },
+        _openedChanged: function () {
+            $(this.querySelector("ul")).slideToggle(this.opened);
+        }
+    });
+
+    function doMdToc($parent) {
+        var selectString = "h1,h2,h3,h4,h5,h6,h7",
+        levelMap = {},
+        rootTree = {
+            name: "root",
+            id: "",
+            parent: null,
+            children: [],
+            level: 10
+        },
+        lastNode;
+
+        //make levelMap
+        selectString.split(",").forEach(function (item) {//h1:9 h2:8 ...h7:3
+            levelMap[item] = 10 - (item.match(/\d/)[0] * 1);
+        });
+
+
+        function tryIntoTree(newNode, treeNode) {
+            if (newNode.level >= treeNode.level) {//try to be  parent or brother
+                tryIntoTree(newNode, treeNode.parent);
+            } else {//try to children
+                newNode.parent = treeNode;
+                treeNode.children.push(newNode);
+            }
+        }
+
+        //do tree
+        lastNode = rootTree;
+        var markedElement = $(".marked-element");
+        markedElement.find(selectString).each(function (i, el) {
+            var tagName = this.tagName.toLowerCase(),
+            id = "nav-tree" + tagName + "-" + i;
+            var thisNode = {
+                name: this.innerText,
+                id: id,
+                parent: null,
+                children: [],
+                level: levelMap[tagName]
+            };
+
+            tryIntoTree(thisNode, lastNode);
+            lastNode = thisNode;
+            el.id = id;
+        });
+
+        function getSiblings(preEle,rootEle,levelMap){
+            var brothers = [];
+            var rootLevel =  levelMap[rootEle.tagName.toLowerCase()];
+            function getSibling(preEle){
+                var nextEle = preEle.nextElementSibling;
+                if(nextEle){
+                    var  nextEleLevel =  levelMap[nextEle.tagName.toLowerCase()];
+                    if(!nextEleLevel||(nextEleLevel&&nextEleLevel < rootLevel)){
+                        brothers.push(nextEle);
+                        getSibling(nextEle);
+                    }
+                }
+            }
+            getSibling(preEle,rootLevel);
+            return brothers;
+        }
+
+        //set section
+        markedElement.find(selectString).each(function(){
+            var brothers = getSiblings(this,this,levelMap);
+            $([this].concat(brothers)).wrapAll("<div class='section'></div>");
+            $(brothers).wrapAll("<div class='detail-section'></div>");
+        });
+
+        var $headerNav = markedElement.find("[id^='nav']");
+        $(".detail-section").show();
+        $headerNav.addClass("opened");
+        $headerNav.click(function(){
+            $(this).parent().find(".detail-section").eq(0).slideToggle(100);
+            $(this).toggleClass("opened");
+        });
+
+
+        function createTreeUl(children, parent) {
+            var $ul = $("<ul></ul>");
+            $.each(children, function (index, item) {
+                var $li = $("<li><a href='#" + item.id + "'>" + item.name + "</a></li>");
+                if (item.children.length > 0) {
+                    createTreeUl(item.children, $li);
+                }
+                $ul.append($li);
+            });
+            parent.append($ul);
+        }
+
+        createTreeUl(rootTree.children, $parent);
+
+    }
+
+
+</script>

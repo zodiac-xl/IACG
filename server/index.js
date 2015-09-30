@@ -13,8 +13,11 @@ import _ from 'lodash';
 import koa from 'koa';
 import koaProxy from 'koa-proxy';
 import koaStatic from 'koa-static';
+import bodyParser from 'koa-body-parser';
+import jsonResp from 'koa-json-response';
 import mongo from 'koa-mongo';
 import Freemarker from 'freemarker.js';
+import Url from 'browser-url';
 
 
 const app = koa();
@@ -64,11 +67,18 @@ app.use(function*(next) {
     yield next;
 });
 
+//body
+app.use(bodyParser());
+
+//json response
+app.use(jsonResp());
+
 //router
 _.forIn(routes, function (route, key) {
     app.use(route.routes())
         .use(route.allowedMethods());
 });
+
 
 //404 and error
 app.use(function *(next) {

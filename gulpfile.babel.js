@@ -12,6 +12,7 @@ import gutil            from 'gulp-util'
 import nodemon          from 'gulp-nodemon'
 import livereload       from 'gulp-livereload'
 import runSequence      from 'run-sequence'
+import rename           from 'gulp-rename'
 
 //postcss
 import postcss          from 'gulp-postcss'
@@ -41,16 +42,14 @@ gulp.task('default', [
 // blog
 gulp.task('blog', function (cb) {
     runSequence.use(gulp)(
-        'clean:posts',
-        'copy',
-        'updateCategory',
+        'updatePostTree',
         cb
     )
 });
 
 
 gulp.task('clean:posts', function (cb) {
-    del(__md("posts")).then(function(){
+    del(__md("posts")).then(function () {
         cb();
     });
 });
@@ -82,23 +81,39 @@ gulp.task('copy', function (cb) {
 });
 
 
-gulp.task('updateCategory', function (cb) {
+gulp.task('updatePostTree', function (cb) {
     var mdPath = __md("posts");
     fs.readdir(mdPath, function (err, filepaths) {
         if (err) throw err;
-        var data = {
-            categorys: []
-        };
-        console.log(filepaths.length);
-        _.forEach(filepaths, function (filepath) {
+
+        var postsTree = require(__md("postsTree.js")).postsTree,
+            newPostsTree = [];
+        _.forEach(filepaths, function (filepath, i) {
             var fileName = path.basename(filepath);
-            data.categorys.push({
+
+
+            function findNodeByFileName(fileName) {
+                var thisNode = {};
+                _.forEach(postsTree, function (item) {
+                    if (item.fileName == fileName) {
+                        thisNode = item;
+                        return false;
+                    }
+                });
+                return thisNode
+            }
+
+            var thisNode = findNodeByFileName(fileName);
+
+            thisNode = {
+                id: thisNode.id || postsTree.length,
                 name: fileName.replace(/\.md/, ""),
-                fileName: fileName,
-                tags: []
-            });
+                tags: thisNode.tags || [],
+                lastModifiedTime: thisNode.lastModifiedTime || new Date()
+            };
+            newPostsTree.push(thisNode);
         });
-        fs.writeFile(__md("categorys.js"), esformatter.format("module.exports=" + JSON.stringify(data)), function (err) {
+        fs.writeFile(__md("postsTree.js"), esformatter.format("module.exports=" + JSON.stringify({"postsTree": postsTree})), function (err) {
             if (err) throw err;
             cb()
         });
@@ -109,28 +124,35 @@ gulp.task('updateCategory', function (cb) {
 });
 
 
-gulp.task('css', [
-    "clean:postCss",
-    "postCss"
-]);
+gulp.task('css', function () {
+    runSequence.use(gulp)(
+        "clean:postCss",
+        "postCss"
+    )
+});
 //
 gulp.task('postCss', function () {
     var processors = [
         nested,
         autoprefixer({browsers: ['last 1 version']}),
-        mqpacker,
-        csswring
+        mqpacker
+        //csswring
     ];
     return gulp.src(__root("develop/**/*.scss"))
-        .pipe(sourcemaps.init())
+        .pipe(rename(function (path) {
+            path.extname = ".css"
+        }))
+        //.pipe(sourcemaps.init())
         .pipe(postcss(processors))
-        .pipe(sourcemaps.write('.'))
+        //.pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(__root("deploy")));
 });
 
 //
 gulp.task('clean:postCss', function (cb) {
-    del(__root("deploy"), cb);
+    del(__root("deploy/postcss")).then(function () {
+        cb();
+    });
 });
 
 

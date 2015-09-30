@@ -59,13 +59,28 @@ input, textarea, select {
 }
 
 input, textarea, select {
-    *font-size: 100%;
+    font-size: 100%;
 }
 
 legend {
     color: #000;
 }
 
-#yui3-css-stamp.cssreset {
-    display: none;
+a {
+    color: #2a7ae2;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #1756a9;
+}
+
+a:hover {
+    color: #111;
+    text-decoration: underline;
+}
+
+a:active {
+    color: #2a7ae2;
+    text-decoration: none
 }
