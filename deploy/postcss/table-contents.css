@@ -1,0 +1,27 @@
+:host ::content .table-contents{
+  font-size: 14px;
+  background: #f4f7f8;
+
+}
+:host ::content .table-contents .heading{
+  display: block;
+  padding: 10px;
+  cursor: pointer;
+
+}
+:host ::content .table-contents a:active, :host ::content .table-contents a:focus, :host ::content .table-contents a:hover {
+  text-decoration: underline;
+
+}
+:host ::content .table-contents ul, :host ::content .table-contents ol {
+  margin-left: 30px;
+  list-style: initial;
+  padding-bottom: 20px;
+
+}
+:host ::content .table-contents li {
+  position: relative;
+  padding-top: 10px;
+
+}
+

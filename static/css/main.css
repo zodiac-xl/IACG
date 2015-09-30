@@ -1,0 +1,20 @@
+html {
+    font-size: 100px;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: .28em;
+    line-height: 1;
+    color: #333;
+}
+.container-main{
+    position: relative;
+    width: 740px;
+    margin: 0 auto;
+    min-height: 340px;
+    padding: 0.25rem 0 0.5rem;
+    z-index: 2;
+}
