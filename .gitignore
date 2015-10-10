@@ -7,3 +7,5 @@ bower_components
 ###工程
 .idea
 IACG.iml
+
+.DS_Store

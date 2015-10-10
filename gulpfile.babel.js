@@ -2,6 +2,7 @@ import path             from 'path';
 import fs               from 'fs';
 import _                from 'lodash';
 
+
 //blog
 import walk             from 'walk';
 import esformatter      from 'esformatter';//代码格式化
@@ -25,6 +26,9 @@ import del              from 'del'
 
 //
 import config           from 'config';
+
+//
+import md5              from 'md5'
 
 let __root = (dir) => path.join("./", dir);
 let __md = (dir) =>path.join(config.path.static, "markdown/" + dir);
@@ -106,14 +110,13 @@ gulp.task('updatePostTree', function (cb) {
             var thisNode = findNodeByFileName(fileName);
 
             thisNode = {
-                id: thisNode.id || postsTree.length,
                 name: fileName.replace(/\.md/, ""),
                 tags: thisNode.tags || [],
                 lastModifiedTime: thisNode.lastModifiedTime || new Date()
             };
             newPostsTree.push(thisNode);
         });
-        fs.writeFile(__md("postsTree.js"), esformatter.format("module.exports=" + JSON.stringify({"postsTree": postsTree})), function (err) {
+        fs.writeFile(__md("postsTree.js"), esformatter.format("module.exports=" + JSON.stringify({"postsTree": newPostsTree})), function (err) {
             if (err) throw err;
             cb()
         });

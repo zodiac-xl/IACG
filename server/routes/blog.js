@@ -1,10 +1,12 @@
 import fs               from 'fs';
 import path             from 'path';
 import _                from 'lodash';
+import del              from 'del'
 
 //
 import gulp             from 'gulp'
 import rename           from 'gulp-rename'
+import gcallback        from 'gulp-callback'
 
 //
 import config           from 'config';
@@ -20,6 +22,9 @@ import md2JekyllHtml     from 'md2JekyllHtml';
 
 
 let blog = koaRouter();
+let markdownPath = path.join(config.path.static, "markdown");
+let postsPath = path.join(markdownPath, "posts");
+let postsTreePath = path.join(markdownPath, "postsTree.js");
 
 
 function splitArray(arr, size) {
@@ -36,31 +41,26 @@ function splitArray(arr, size) {
 
 function findNodeByFileName(name, postsTree) {
     var thisNode = {};
-    _.forEach(postsTree, function (item) {
+    _.forEach(postsTree, function (item, i) {
         if (item.name == name) {
             thisNode = item;
+            thisNode.index = i;
             return false;
         }
     });
     return thisNode
 }
 
-function findNodeById(id, postsTree) {
-    var thisNode = {};
-    _.forEach(postsTree, function (item) {
-        if (item.id == id) {
-            thisNode = item;
-            return false;
-        }
-    });
-    return thisNode
+
+function updatePostsTree(node) {
+
 }
 
 //router
 blog
 
     .get('/blog', function *(next) {
-        var postsTree = require(path.join(config.path.static, "markdown/postsTree")).postsTree,
+        var postsTree = require(postsTreePath).postsTree,
         pageIndex = Number(this.query.page || 0),
         pageSize = 10,
         newPostsTree = splitArray(postsTree, pageSize);
@@ -78,18 +78,16 @@ blog
     .get('/blog/posts/:name', function *(next) {
 
         var fileName = this.params.name,
-        mdPath = path.join(config.path.static, "markdown/posts/" + fileName + ".md");
+        mdPath = path.join(postsPath, fileName + ".md");
 
         if (pathExists.sync(mdPath)) {
-            var mdSource = encodeURIComponent(fs.readFileSync(mdPath).toString('utf-8'));
-
-            var postsTree = require(path.join(config.path.static, "markdown/postsTree.js")).postsTree,
+            var mdSource = encodeURIComponent(fs.readFileSync(mdPath).toString('utf-8')),
+            postsTree = require(postsTreePath).postsTree,
             thisNode = findNodeByFileName(fileName, postsTree);
 
-            this.body = this.fm.renderSync("pages/blog/marked.ftl", {
+            this.body = this.fm.renderSync("pages/blog/post.ftl", {
                 md: {
                     source: mdSource,
-                    id: thisNode.id,
                     name: fileName,
                     lastModifiedTime: thisNode.lastModifiedTime
                 }
@@ -100,33 +98,61 @@ blog
     })
 
     .post('/blog/posts', function *(next) {
-        var postsTree = require(path.join(config.path.static, "markdown/postsTree.js")).postsTree,
+        var postsTree = require(postsTreePath).postsTree,
         thisNode,
         data = this.request.body,
-        id = data.id,
+        isNew = data["isNew"],
+        originalName = data["originalName"],
         name = data.name,
         mdSource = data.md,
-        filePath;
+        filePath,
+        needRename = false;
 
-        if (id == 0) {//new
+        if (originalName != name) {
+            needRename = true;
+        }
+        console.log(isNew)
 
-        } else {
-            thisNode = findNodeById(id, postsTree);
-            filePath = path.join(config.path.static, "markdown/posts/" + thisNode.name + ".md");
+        if (isNew) {//new
+            filePath = path.join(postsPath, name + ".md");
             fs.open(filePath, "a", "0666", function (e, fd) {
                 fs.writeFile(filePath, mdSource, function () {
+                    fs.closeSync(fd);
+                });
+            });
 
-                    if (thisNode.name != name) {//rename
-                        gulp.src(filePath)
-                            .pipe(rename(function (path) {
-                                path.basename = name;
-                            }))
-                            .pipe(gulp.dest(config.path.static));
+            postsTree.push({
+                "name": name,
+                "tags": [],
+                "lastModifiedTime": new Date()
+            });
+        } else {
+            thisNode = findNodeByFileName(originalName, postsTree);
+            filePath = path.join(postsPath, originalName + ".md");
+            fs.open(filePath, "a", "0666", function (e, fd) {
+                fs.writeFile(filePath, mdSource, function () {
+                    if (needRename) {//rename
+                        fs.rename(filePath, path.join(postsPath, name + ".md"), function(){
+                            console.log(1111);
+                            del(filePath);
+                        });
+                        //gulp.src(filePath)
+                        //    .pipe(rename(function (path) {
+                        //        path.basename = name;
+                        //    }))
+                        //    .pipe(gulp.dest(postsPath))
+                        //    .pipe(gcallback(function () {
+                        //        console.log(filePath);
+                        //        del(filePath);
+                        //    }))
                     }
 
                     fs.closeSync(fd);
                 });
             });
+            thisNode["lastModifiedTime"] = new Date();
+            thisNode["name"] = name;
+            postsTree[thisNode.index] = thisNode;
         }
 
         return this.jsonResp(200, {message: "done"});

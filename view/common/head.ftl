@@ -17,35 +17,40 @@
     <link rel="stylesheet" href="/css/reset.css"/>
     <link rel="stylesheet" href="/css/main.css"/>
 
-<#-- 给 Web Components 使用 Polyfills 以便支持旧的浏览器 -->
+    <#-- 给 Web Components 使用 Polyfills 以便支持旧的浏览器 -->
     <script src="/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 
-<#--bower_components依赖-->
-<#if pageConfig.bower_components??>
-    <#list pageConfig.bower_components as bower_component>
-        <script src="/bower_components/${bower_component}"></script>
-    </#list>
-</#if>
+    <#--jquery-->
+    <script src="/bower_components/jquery/dist/jquery.js"></script>
 
-<#--css依赖-->
-<#if pageConfig.cssDeps??>
-    <#list pageConfig.cssDeps as cssDep>
-        <link rel="stylesheet" href="/css/${cssDep}">
-    </#list>
-</#if>
+    <#--require-->
+    <script src="/bower_components/requirejs/require.js"></script>
+    <script>
+        require.config({
+            //By default load any module IDs from js/lib
+            baseUrl: '/',
+            //except, if the module ID starts with "app",
+            //load it from the js/app directory. paths
+            //config is relative to the baseUrl, and
+            //never includes a ".js" extension since
+            //the paths config could be for a directory.
+            paths: {
+                text: "bower_components/text/text",
+                css: "bower_components/require-css/css",
+                wc:"bower_components/require-webcomponents/webcomponents",
+                jquery:"bower_components/jquery/dist/jquery.min",
+                niceScroll:"bower_components/jquery.nicescroll/dist/jquery.nicescroll.min"
+            }
 
-<#--js依赖-->
-<#if pageConfig.jsDeps??>
-    <#list pageConfig.jsDeps as jsDep>
-        <script src="/js/${jsDep}"></script>
-    </#list>
-</#if>
+        });
+    </script>
 
-<#--Web Components依赖-->
-<#if pageConfig.webcomponents??>
-    <#list pageConfig.webcomponents as webcomponent>
-        <link rel="import" href="/webcomponents/${webcomponent}">
-    </#list>
-</#if>
+
+    <#--css依赖 首屏css尽量不要使用require加载（避免闪屏）-->
+    <#if pageConfig.cssDeps??>
+        <#list pageConfig.cssDeps as cssDep>
+            <link  rel="stylesheet" href="/css/${cssDep}.css">
+        </#list>
+    </#if>
 </head>
 <body class="${pageConfig.class!}" id="${pageConfig.id!}">

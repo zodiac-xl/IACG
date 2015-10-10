@@ -8,7 +8,7 @@ export default Object.assign(require('../package.json'), {
         static:__root('static')
     },
     proxy: {
-        match: /^\/test/,
+        match: /^\/proxy/,
         host: 'http://piaofang.vip.sankuai.com'
     },
     debug: true

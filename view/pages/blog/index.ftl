@@ -5,13 +5,12 @@
 <#assign pageConfig = {
 "id": "blog-home",
 "class":"blog-home",
-"cssDeps":["post.css"],
-"webcomponents":[
-"marked-element.html"
-]
+"cssDeps":["pages/blog/blog"]
 }>
+
 <#include "/common/head.ftl">
-<link href="/static/css/post.css">
+
+
 <#include "/common/header.ftl">
 <div class="container-main">
 
@@ -35,4 +34,5 @@
     </#if>
     </ul>
 </div>
+
 <#include "/common/foot.ftl">
