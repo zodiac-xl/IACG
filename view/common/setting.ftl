@@ -4,4 +4,3 @@
 
 <#-- 解决四位以上数字不加逗号的处理 -->
 <#setting number_format='0.##' />
-<base href="${ftlBasePath}/">
