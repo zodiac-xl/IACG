@@ -62,9 +62,7 @@ function findNodeByFileName(name, postsTree) {
 function updatePostsTree(postsTree) {
     var data = esformatter.format("module.exports=" + JSON.stringify({"postsTree": postsTree}));
     if (/\w/gm.test(data)) {
-        fs.writeFile(postsTreePath, data, function (err) {
-            if (err) console.log(err);
-        });
+        fs.writeFileSync(postsTreePath, data)
     }else{
         console.log("postsTree is null do not allow save");
     }
@@ -75,9 +73,7 @@ function updatePostsTagsTree(postsTree) {
     var data = esformatter.format("module.exports=" + JSON.stringify({"postsTagsTree": tagsTree}));
 
     if (/\w/gm.test(tagsTree)) {
-        fs.writeFile(postsTagsTreePath, data, function (err) {
-            if (err) console.log(err);
-        });
+        fs.writeFileSync(postsTagsTreePath, data);
     }else{
         console.log("tagTree is null do not allow save");
     }
@@ -243,6 +239,7 @@ blog
         }
         postsTree[thisNode.index].tags = JSON.parse(data.tags);
         updatePostsTree(postsTree);
+        updatePostsTagsTree(postsTree);
         return this.jsonResp(200, {message: "done"});
     });
 
