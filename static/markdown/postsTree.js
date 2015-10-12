@@ -1,7 +1,7 @@
 module.exports = {
   "postsTree": [{
     "name": "200（form cache） 304",
-    "tags": ["网络"],
+    "tags": ["网络", "ajax"],
     "lastModifiedTime": "2015-10-10T07:19:34.811Z"
   }, {
     "name": "Chrome Dev Tools面板详解",
