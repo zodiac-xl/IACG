@@ -59,9 +59,9 @@ function findNodeByFileName(name, postsTree) {
 
 
 function updatePostsTree(postsTree) {
-    console.log(postsTree);
-    if (/\w/gm.test(postsTree)) {
-        fs.writeFile(postsTreePath, esformatter.format("module.exports=" + JSON.stringify({"postsTree": postsTree})), function (err) {
+    var data = esformatter.format("module.exports=" + JSON.stringify({"postsTree": postsTree}));
+    if (/\w/gm.test(data)) {
+        fs.writeFile(postsTreePath, data, function (err) {
             if (err) throw err;
         });
     }else{
@@ -71,8 +71,10 @@ function updatePostsTree(postsTree) {
 
 function updatePostsTagsTree(postsTree) {
     var tagsTree = getPostsTagsTree(postsTree);
+    var data = esformatter.format("module.exports=" + JSON.stringify({"postsTagsTree": tagsTree}));
+
     if (/\w/gm.test(tagsTree)) {
-        fs.writeFile(postsTagsTreePath, esformatter.format("module.exports=" + JSON.stringify({"postsTagsTree": tagsTree})), function (err) {
+        fs.writeFile(postsTagsTreePath, data, function (err) {
             if (err) throw err;
         });
     }else{
