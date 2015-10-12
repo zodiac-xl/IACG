@@ -62,7 +62,8 @@ function findNodeByFileName(name, postsTree) {
 function updatePostsTree(postsTree) {
     var data = esformatter.format("module.exports=" + JSON.stringify({"postsTree": postsTree}));
     if (/\w/gm.test(data)) {
-        fs.writeFileSync(postsTreePath, data)
+        fs.writeFileSync(postsTreePath, data);
+        fs.close();
     }else{
         console.log("postsTree is null do not allow save");
     }
@@ -74,6 +75,7 @@ function updatePostsTagsTree(postsTree) {
 
     if (/\w/gm.test(tagsTree)) {
         fs.writeFileSync(postsTagsTreePath, data);
+        fs.close();
     }else{
         console.log("tagTree is null do not allow save");
     }
