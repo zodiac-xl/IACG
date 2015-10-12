@@ -22,6 +22,6 @@
     "require": "*",
     "text": "requirejs/text#~2.0.14",
     "require-webcomponents": "*",
-    "marked-element": "PolymerElements/marked-element#~1.1.1"
+    "toastr": "~2.1.2"
   }
 }
