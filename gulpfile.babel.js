@@ -40,10 +40,6 @@ gulp.task('default', [
     'server'
 ]);
 
-// default task
-gulp.task('default', [
-    'server'
-]);
 
 // blog
 gulp.task('blog', function (cb) {
