@@ -17,8 +17,6 @@ import koaRouter        from 'koa-router';
 //
 import pathExists       from 'path-exists';
 
-//
-import md2JekyllHtml    from 'md2JekyllHtml';
 
 import esformatter      from 'esformatter';//代码格式化
 
