@@ -59,26 +59,36 @@ function findNodeByFileName(name, postsTree) {
 }
 
 
-function updatePostsTree(postsTree) {
+function updatePostsTree(postsTree,cb) {
     var data = esformatter.format("module.exports=" + JSON.stringify({"postsTree": postsTree}));
     if (/\w/gm.test(data)) {
-        fs.writeFileSync(postsTreePath, data);
-        fs.close();
+        fs.writeFile(postsTreePath, data, function (err) {
+            if (err) {
+                console.log(err);
+            }else{
+                fs.closeSync(postsTreePath);
+                cb()
+            }
+        });
     }else{
         console.log("postsTree is null do not allow save");
     }
 }
 
 function updatePostsTagsTree(postsTree) {
-    var tagsTree = getPostsTagsTree(postsTree);
-    var data = esformatter.format("module.exports=" + JSON.stringify({"postsTagsTree": tagsTree}));
+    updatePostsTree(postsTree,function(){
+        var tagsTree = getPostsTagsTree(postsTree);
+        var data = esformatter.format("module.exports=" + JSON.stringify({"postsTagsTree": tagsTree}));
 
-    if (/\w/gm.test(tagsTree)) {
-        fs.writeFileSync(postsTagsTreePath, data);
-        fs.close();
-    }else{
-        console.log("tagTree is null do not allow save");
-    }
+        if (/\w/gm.test(tagsTree)) {
+            fs.writeFile(postsTagsTreePath, data, function (err) {
+                if (err) console.log(err);
+                fs.closeSync(postsTagsTreePath);
+            });
+        }else{
+            console.log("tagTree is null do not allow save");
+        }
+    });
 }
 
 function getPostsTagsTree(postsTree) {
@@ -232,15 +242,7 @@ blog
         var data = this.request.body,
         fileName = this.params.name,
         thisNode = findNodeByFileName(fileName, postsTree);
-        console.log(fileName);
-        console.log(thisNode);
-        if(postsTree){
-            console.log(111)
-        }else{
-            console.log(2222)
-        }
         postsTree[thisNode.index].tags = JSON.parse(data.tags);
-        updatePostsTree(postsTree);
         updatePostsTagsTree(postsTree);
         return this.jsonResp(200, {message: "done"});
     });
