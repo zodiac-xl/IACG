@@ -242,11 +242,7 @@ blog
             console.log(2222)
         }
         postsTree[thisNode.index].tags = JSON.parse(data.tags);
-        _.forEach(postsTree, function (item, i) {
-            delete postsTree[i].index;
-        });
         updatePostsTree(postsTree);
-        updatePostsTagsTree(postsTree);
         return this.jsonResp(200, {message: "done"});
     });
 
