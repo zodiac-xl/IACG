@@ -19,9 +19,9 @@
     "jquery.nicescroll": "~3.6.0",
     "polymer": "Polymer/polymer#^1.0.0",
     "require-css": "~0.1.8",
-    "require": "*",
     "text": "requirejs/text#~2.0.14",
     "require-webcomponents": "*",
-    "toastr": "~2.1.2"
+    "toastr": "~2.1.2",
+    "requirejs": "~2.1.20"
   }
 }
