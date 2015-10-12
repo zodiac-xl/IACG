@@ -236,6 +236,11 @@ blog
         thisNode = findNodeByFileName(fileName, postsTree);
         console.log(fileName);
         console.log(thisNode);
+        if(postsTree){
+            console.log(111)
+        }else{
+            console.log(2222)
+        }
         postsTree[thisNode.index].tags = JSON.parse(data.tags);
         _.forEach(postsTree, function (item, i) {
             delete postsTree[i].index;

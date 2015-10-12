@@ -2,11 +2,11 @@ module.exports = {
   "postsTree": [{
     "name": "200（form cache） 304",
     "tags": ["网络"],
-    "lastModifiedTime": "2015-10-10T07:19:34.811Z"
+    "lastModifiedTime": "2015-10-10 2:32:41 PM"
   }, {
     "name": "Chrome Dev Tools面板详解",
     "tags": ["chrome"],
-    "lastModifiedTime": "2015-10-12T02:31:40.040Z"
+    "lastModifiedTime": "2015-10-10 2:32:41 PM"
   }, {
     "name": "Chrome DevTools快捷键",
     "tags": ["chrome"],
@@ -26,7 +26,7 @@ module.exports = {
   }, {
     "name": "Fetch API",
     "tags": ["ajax"],
-    "lastModifiedTime": "2015-10-12T02:35:09.735Z"
+    "lastModifiedTime": "2015-10-10 2:32:41 PM"
   }, {
     "name": "Gulp",
     "tags": ["gulp"],
