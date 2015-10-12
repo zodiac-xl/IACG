@@ -146,29 +146,29 @@ module.exports = {
       "lastModifiedTime": "2015-10-10 2:32:41 PM",
       "index": 22
     }, {
-      "name": "webpack学习三：Installation",
-      "tags": ["Webpack"],
-      "lastModifiedTime": "2015-10-10 2:32:41 PM",
-      "index": 23
-    }, {
       "name": "webpack学习二：WHAT IS WEBPACK",
       "tags": ["Webpack"],
-      "lastModifiedTime": "2015-10-10 2:32:41 PM",
-      "index": 24
+      "lastModifiedTime": "2015-10-10 2:32:42 PM",
+      "index": 23
     }, {
-      "name": "webpack学习五：plugins",
+      "name": "webpack学习三：Installation",
       "tags": ["Webpack"],
-      "lastModifiedTime": "2015-10-10 2:32:41 PM",
-      "index": 25
+      "lastModifiedTime": "2015-10-10 2:32:43 PM",
+      "index": 24
     }, {
       "name": "webpack学习四：Useage",
       "tags": ["Webpack"],
-      "lastModifiedTime": "2015-10-10 2:32:41 PM",
+      "lastModifiedTime": "2015-10-10 2:32:45 PM",
+      "index": 25
+    }, {
+      "name": "webpack学习五：plugins",
+      "tags": ["Webpack"],
+      "lastModifiedTime": "2015-10-10 2:32:44 PM",
       "index": 26
     }, {
       "name": "webpack实践",
       "tags": ["Webpack"],
-      "lastModifiedTime": "2015-10-10 2:32:41 PM",
+      "lastModifiedTime": "2015-10-10 2:32:40 PM",
       "index": 27
     }],
     "jQuery": [{

@@ -32,6 +32,9 @@ let postsTagsTreePath = path.join(markdownPath, "postsTagsTree.js");
 var postsTree = require(postsTreePath).postsTree;
 var postsTagsTree = require(postsTagsTreePath).postsTagsTree;
 
+
+
+
 function splitArray(arr, size) {
     var result = [];
     _.forEach(arr, function (item, index) {
@@ -102,6 +105,7 @@ blog
         newPostsTree = postsTree,
         tags = Object.keys(postsTagsTree),
         pageTitle = "Posts",
+        totalSize,
         prePage,
         nextPage,
         tagQuery = "";
@@ -110,6 +114,7 @@ blog
             pageTitle = tagName;
             tagQuery = "&tagName=" + tagName;
         }
+        totalSize = newPostsTree.length;
         newPostsTree = splitArray(newPostsTree, pageSize);
 
         prePage = pageIndex ? ("/blog?page=" + (pageIndex - 1) + tagQuery) : "";
@@ -118,7 +123,7 @@ blog
             this.body = this.fm.renderSync("pages/blog/index.ftl", {
                 title: pageTitle,
                 posts: newPostsTree[pageIndex],
-                totalSize: postsTree.length,
+                totalSize: totalSize,
                 currentIndex: pageIndex,
                 tags: tags,
                 prePage: prePage,
@@ -138,17 +143,6 @@ blog
         if (pathExists.sync(mdPath)) {
             var mdSource = encodeURIComponent(fs.readFileSync(mdPath).toString('utf-8')),
             thisNode = findNodeByFileName(fileName, postsTree);
-            console.log({
-                md: {
-                    preNode: postsTree[thisNode.index * 1 - 1] || {},
-                    nextNode: postsTree[thisNode.index * 1 + 1] || {},
-                    tags: thisNode.tags,
-                    source: mdSource,
-                    name: fileName,
-                    lastModifiedTime: thisNode.lastModifiedTime
-                },
-                tags: tags
-            })
             this.body = this.fm.renderSync("pages/blog/post.ftl", {
                 md: {
                     preNode: postsTree[thisNode.index * 1 - 1] || {},
