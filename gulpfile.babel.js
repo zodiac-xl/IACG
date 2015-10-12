@@ -29,6 +29,8 @@ import config           from 'config';
 
 //
 import md5              from 'md5'
+import dateFormat       from 'dateFormat'
+
 
 let __root = (dir) => path.join("./", dir);
 let __md = (dir) =>path.join(config.path.static, "markdown/" + dir);
@@ -112,7 +114,7 @@ gulp.task('updatePostTree', function (cb) {
             thisNode = {
                 name: fileName.replace(/\.md/, ""),
                 tags: thisNode.tags || [],
-                lastModifiedTime: thisNode.lastModifiedTime || new Date()
+                lastModifiedTime: thisNode.lastModifiedTime || dateFormat(new Date(), "yyyy-mm-dd h:MM:ss TT")
             };
             newPostsTree.push(thisNode);
         });

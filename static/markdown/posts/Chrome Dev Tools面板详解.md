@@ -218,11 +218,13 @@ Drawer
 调试的按钮
 这里介绍一个小技巧：如果添加“条件判断”的断点？相信大家在调试的时候，最烦就是在for循环中的断点了，需要不断地按下一步来在循环中找到要验证的数据。在代码中添加debugger的方式可以这么写：
 
-for(var i = 0; i < length; i++){
-    if(i === 2){
-        debugger;
-    }
-}
+
+	for(var i = 0; i < length; i++){
+	    if(i === 2){
+	        debugger;
+	    }
+	}
+
 其实也不用这么麻烦的，在断点的地方右键，选择“Edit breakpoint”就可以写上你想出现调试的条件表达式。
 
 另外，当你在Chrome开发工具中配置了workspace之后，你就可以直接在source面板上编辑代码并保存代码了，相当方便。当然，这只针对本地开发的代码，对于线上的代码就无能为力了。
@@ -241,11 +243,12 @@ source map其实是在代码在发布的时候声明它的变量替换的规则�
 //@ sourceMappingURL=jquery.min.map
 这就是声明了它的source map文件的路径，而source map文件里大概是这样子的：
 
-{
-    "version": 3,
-    "file": "jquery.min.js",
-    "sources":["jquery.js"],
-    "names": ["window","undefined","isArraylike"],
-    "mappings": "CAaA,SAAWA,EAAQC"
-}
+	{
+ 	   "version": 3,
+ 	   "file": "jquery.min.js",
+ 	   "sources":["jquery.js"],
+	    "names": ["window","undefined","isArraylike"],
+ 	   "mappings": "CAaA,SAAWA,EAAQC"
+	}
+
 names就是原本的变量名字，mappings则表示该变量名字出现的位置。具体的位置规则是利用了VLQ编码，有兴趣的同学可以自己去挖掘。如果你想简单点，就直接使用Google的Closure编译器来创建这样的map文件。

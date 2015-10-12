@@ -18,14 +18,19 @@ import koaRouter        from 'koa-router';
 import pathExists       from 'path-exists';
 
 //
-import md2JekyllHtml     from 'md2JekyllHtml';
+import md2JekyllHtml    from 'md2JekyllHtml';
+
+import esformatter      from 'esformatter';//代码格式化
 
 
 let blog = koaRouter();
 let markdownPath = path.join(config.path.static, "markdown");
 let postsPath = path.join(markdownPath, "posts");
 let postsTreePath = path.join(markdownPath, "postsTree.js");
+let postsTagsTreePath = path.join(markdownPath, "postsTagsTree.js");
 
+var postsTree = require(postsTreePath).postsTree;
+var postsTagsTree = require(postsTagsTreePath).postsTagsTree;
 
 function splitArray(arr, size) {
     var result = [];
@@ -52,56 +57,132 @@ function findNodeByFileName(name, postsTree) {
 }
 
 
-function updatePostsTree(node) {
-
+function updatePostsTree(postsTree) {
+    if (/\w/gm.test(postsTree)) {
+        fs.writeFile(postsTreePath, esformatter.format("module.exports=" + JSON.stringify({"postsTree": postsTree})), function (err) {
+            if (err) throw err;
+        });
+    }else{
+        console.log("postsTree is null do not allow save");
+    }
 }
+
+function updatePostsTagsTree(postsTree) {
+    var tagsTree = getPostsTagsTree(postsTree);
+    if (/\w/gm.test(tagsTree)) {
+        fs.writeFile(postsTagsTreePath, esformatter.format("module.exports=" + JSON.stringify({"postsTagsTree": tagsTree})), function (err) {
+            if (err) throw err;
+        });
+    }else{
+        console.log("tagTree is null do not allow save");
+    }
+}
+
+function getPostsTagsTree(postsTree) {
+    var tagsTree = {};
+    postsTree.forEach(function (item, index) {
+        item.tags.forEach(function (tag, i) {
+            if (!tagsTree[tag]) {
+                tagsTree[tag] = [];
+            }
+            tagsTree[tag].push(item);
+        })
+    });
+    return tagsTree
+}
+
 
 //router
 blog
 
     .get('/blog', function *(next) {
-        var postsTree = require(postsTreePath).postsTree,
+        var tagName = this.query.tagName,
         pageIndex = Number(this.query.page || 0),
         pageSize = 10,
-        newPostsTree = splitArray(postsTree, pageSize);
+        newPostsTree = postsTree,
+        tags = Object.keys(postsTagsTree),
+        pageTitle = "Posts",
+        prePage,
+        nextPage,
+        tagQuery = "";
+        if (tagName) {
+            newPostsTree = postsTagsTree[tagName];
+            pageTitle = tagName;
+            tagQuery = "&tagName=" + tagName;
+        }
+        newPostsTree = splitArray(newPostsTree, pageSize);
 
-        this.body = this.fm.renderSync("pages/blog/index.ftl", {
-            posts: newPostsTree[pageIndex],
-            totalSize: postsTree.length,
-            currentIndex: pageIndex,
-            preIndex: pageIndex ? (pageIndex - 1) : "false",
-            nextIndex: ((newPostsTree.length - 1) >= (pageIndex + 1)) ? (pageIndex + 1) : "false"
-        });
+        prePage = pageIndex ? ("/blog?page=" + (pageIndex - 1) + tagQuery) : "";
+        nextPage = ((newPostsTree.length - 1) >= (pageIndex + 1)) ? ("/blog?page=" + (pageIndex + 1) + tagQuery) : "";
+        if (postsTree) {
+            this.body = this.fm.renderSync("pages/blog/index.ftl", {
+                title: pageTitle,
+                posts: newPostsTree[pageIndex],
+                totalSize: postsTree.length,
+                currentIndex: pageIndex,
+                tags: tags,
+                prePage: prePage,
+                nextPage: nextPage
+            });
+        } else {
+            this.redirect('/404');
+        }
+
 
     })
-
     .get('/blog/posts/:name', function *(next) {
 
         var fileName = this.params.name,
+        tags = Object.keys(postsTagsTree),
         mdPath = path.join(postsPath, fileName + ".md");
-
         if (pathExists.sync(mdPath)) {
             var mdSource = encodeURIComponent(fs.readFileSync(mdPath).toString('utf-8')),
-            postsTree = require(postsTreePath).postsTree,
             thisNode = findNodeByFileName(fileName, postsTree);
-
-            this.body = this.fm.renderSync("pages/blog/post.ftl", {
+            console.log({
                 md: {
+                    preNode: postsTree[thisNode.index * 1 - 1] || {},
+                    nextNode: postsTree[thisNode.index * 1 + 1] || {},
+                    tags: thisNode.tags,
                     source: mdSource,
                     name: fileName,
                     lastModifiedTime: thisNode.lastModifiedTime
-                }
+                },
+                tags: tags
+            })
+            this.body = this.fm.renderSync("pages/blog/post.ftl", {
+                md: {
+                    preNode: postsTree[thisNode.index * 1 - 1] || {},
+                    nextNode: postsTree[thisNode.index * 1 + 1] || {},
+                    tags: thisNode.tags,
+                    source: mdSource,
+                    name: fileName,
+                    lastModifiedTime: thisNode.lastModifiedTime
+                },
+                tags: tags
             });
         } else {
             this.redirect('/404');
         }
     })
 
-    .post('/blog/posts', function *(next) {
-        var postsTree = require(postsTreePath).postsTree,
-        thisNode,
+
+    .del('/blog/posts', function *(next) {
+        var thisNode,
         data = this.request.body,
-        isNew = data["isNew"],
+        filePath = path.join(postsPath, data.name + ".md");
+
+        thisNode = findNodeByFileName(data.name, postsTree);
+        del(filePath);
+        postsTree.splice(thisNode.index, 1);
+        updatePostsTree(postsTree);
+
+        return this.jsonResp(200, {message: "done"});
+    })
+
+    .post('/blog/posts', function *(next) {
+        var thisNode,
+        data = this.request.body,
+        isNew = false,
         originalName = data["originalName"],
         name = data.name,
         mdSource = data.md,
@@ -111,7 +192,10 @@ blog
         if (originalName != name) {
             needRename = true;
         }
-        console.log(isNew)
+
+        if (data.type == 0) {
+            isNew = true;
+        }
 
         if (isNew) {//new
             filePath = path.join(postsPath, name + ".md");
@@ -132,19 +216,9 @@ blog
             fs.open(filePath, "a", "0666", function (e, fd) {
                 fs.writeFile(filePath, mdSource, function () {
                     if (needRename) {//rename
-                        fs.rename(filePath, path.join(postsPath, name + ".md"), function(){
-                            console.log(1111);
+                        fs.rename(filePath, path.join(postsPath, name + ".md"), function () {
                             del(filePath);
                         });
-                        //gulp.src(filePath)
-                        //    .pipe(rename(function (path) {
-                        //        path.basename = name;
-                        //    }))
-                        //    .pipe(gulp.dest(postsPath))
-                        //    .pipe(gcallback(function () {
-                        //        console.log(filePath);
-                        //        del(filePath);
-                        //    }))
                     }
 
                     fs.closeSync(fd);
@@ -154,8 +228,22 @@ blog
             thisNode["name"] = name;
             postsTree[thisNode.index] = thisNode;
         }
+        updatePostsTree(postsTree);
 
         return this.jsonResp(200, {message: "done"});
+    })
+
+
+    .post("/blog/posts/:name/tags/edit", function *(next) {
+        var data = this.request.body,
+        fileName = this.params.name,
+        thisNode = findNodeByFileName(fileName, postsTree);
+        postsTree[thisNode.index].tags = JSON.parse(data.tags);
+        updatePostsTree(postsTree);
+        updatePostsTagsTree(postsTree);
+        return this.jsonResp(200, {message: "done"});
     });
+
+
 export
 default blog;

@@ -3,33 +3,36 @@
 <dom-module id="table-contents-element">
     <template>
         <style>
-            :host ::content .table-contents{
+            :host ::content .table-contents {
                 font-size: 14px;
                 background: #f4f7f8;
 
             }
-            :host ::content .table-contents .heading{
+
+            :host ::content .table-contents .heading {
                 display: block;
                 padding: 10px;
                 cursor: pointer;
 
             }
+
             :host ::content .table-contents a:active, :host ::content .table-contents a:focus, :host ::content .table-contents a:hover {
                 text-decoration: underline;
 
             }
+
             :host ::content .table-contents ul, :host ::content .table-contents ol {
                 margin-left: 30px;
                 list-style: initial;
                 padding-bottom: 20px;
 
             }
+
             :host ::content .table-contents li {
                 position: relative;
                 padding-top: 10px;
 
             }
-
 
 
         </style>
@@ -48,7 +51,6 @@
         attached: function () {
             this.async(function () {
                 doMdToc($(".table-contents"));
-
             });
         },
         properties: {
@@ -129,26 +131,28 @@
             el.id = id;
         });
 
-        function getSiblings(preEle,rootEle,levelMap){
+        function getSiblings(preEle, rootEle, levelMap) {
             var brothers = [];
-            var rootLevel =  levelMap[rootEle.tagName.toLowerCase()];
-            function getSibling(preEle){
+            var rootLevel = levelMap[rootEle.tagName.toLowerCase()];
+
+            function getSibling(preEle) {
                 var nextEle = preEle.nextElementSibling;
-                if(nextEle){
-                    var  nextEleLevel =  levelMap[nextEle.tagName.toLowerCase()];
-                    if(!nextEleLevel||(nextEleLevel&&nextEleLevel < rootLevel)){
+                if (nextEle) {
+                    var nextEleLevel = levelMap[nextEle.tagName.toLowerCase()];
+                    if (!nextEleLevel || (nextEleLevel && nextEleLevel < rootLevel)) {
                         brothers.push(nextEle);
                         getSibling(nextEle);
                     }
                 }
             }
-            getSibling(preEle,rootLevel);
+
+            getSibling(preEle, rootLevel);
             return brothers;
         }
 
         //set section
-        markedElement.find(selectString).each(function(){
-            var brothers = getSiblings(this,this,levelMap);
+        markedElement.find(selectString).each(function () {
+            var brothers = getSiblings(this, this, levelMap);
             $([this].concat(brothers)).wrapAll("<div class='section'></div>");
             $(brothers).wrapAll("<div class='detail-section'></div>");
         });
@@ -156,7 +160,7 @@
         var $headerNav = markedElement.find("[id^='nav']");
         $(".detail-section").show();
         $headerNav.addClass("opened");
-        $headerNav.click(function(){
+        $headerNav.click(function () {
             $(this).parent().find(".detail-section").eq(0).slideToggle(100);
             $(this).toggleClass("opened");
         });
@@ -174,8 +178,11 @@
             parent.append($ul);
         }
 
-        createTreeUl(rootTree.children, $parent);
-
+        if (rootTree.children.length > 0) {
+            createTreeUl(rootTree.children, $parent);
+        }else{
+            $parent.hide();
+        }
     }
 
 

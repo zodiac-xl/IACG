@@ -82,9 +82,8 @@ _.forIn(routes, function (route, key) {
 
 //404 and error
 app.use(function *(next) {
-    if (this.status == 404) {
+    if (this.status != 404) {
         //this.redirect('/404');
-    } else {
         try {
             yield next;
         } catch (err) {

@@ -116,9 +116,10 @@ Request接口定义了通过HTTP请求资源的request格式。参数需要URL�
 
 最简单的 Request 当然是一个URL，可以通过URL来GET一个资源。
 
-var req = new Request("/index.html");
-console.log(req.method); // "GET"
-console.log(req.url); // "http://example.com/index.html"
+
+	var req = new Request("/index.html");
+	console.log(req.method); // "GET"
+	console.log(req.url); // "http://example.com/index.html"
 
 你也可以将一个建好的Request对象传给构造函数，这样将复制出一个新的Request。
 
@@ -237,11 +238,12 @@ body可以是以下任何一种类型的实例：
 
 可以通过传body参数来设置Request的body：
 
-var form = new FormData(document.getElementById('login-form'));
-fetch("/login", {
-  method: "POST",
-  body: form
-})
+
+	var form = new FormData(document.getElementById('login-form'));
+	fetch("/login", {
+	  method: "POST",
+	  body: form
+	})
 
 Response的第一个参数是body：
 

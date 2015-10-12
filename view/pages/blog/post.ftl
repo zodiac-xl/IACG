@@ -5,21 +5,15 @@
 <#assign pageConfig = {
 "id": "blog-post",
 "class":"blog-post",
-
-
-"jsDeps":["marked.js","highlight.pack.js","pages/blog/post.js"],
-
-"webcomponents":[
-"marked-element.html",
-"table-contents-element.html"
-]
-
+"cssDeps":["pages/blog/blog","pages/blog/highlight-default"]
 }>
 <#include "/common/head.ftl">
 
+<#include "/common/header.ftl">
 
 <style>
     .editor {
+        display: none;
         position: absolute;
         left: 0;
         right: 0;
@@ -59,7 +53,6 @@
         left: 50%;
         padding-left: 0.2rem;
         overflow: scroll;
-        overflow-x: hidden;
     }
 
     .wrap-markdown-source textarea {
@@ -69,12 +62,6 @@
         resize: none;
         background-color: #101010;
         color: #8C8C8C;
-    }
-
-    }
-    .nicescroll-rails {
-        display: none;
-
     }
 
     .title-nav-editor {
@@ -88,37 +75,84 @@
         background-color: white;
     }
 
+    marked-element {
+        display: block;
+        min-height: 5rem;
+        visibility: hidden;
+    }
 
 </style>
 
-<#include "/common/header.ftl">
+<#assign tagsString = "">
 
 <div class="container-main">
-    <button class="edit">
-        edit
-    </button>
-    <button class="new">
-        new
-    </button>
+    <div class="wrap-btns-edit">
+        <button bind-click="editMd">
+            edit
+        </button>
+        <button bind-click="newMd">
+            new
+        </button>
+        <button bind-click="deleteMd">
+            delete
+        </button>
+        <button bind-click="toggleTagsEditor">
+            edit tags
+        </button>
+        <div class="wrap-editor-tags" style="display: none">
+            <input class="tags">
+        <#if tags?size?string != "0">
+            <select bind-change="chooseTag">
+                <option></option>
+                <#list tags as tag>
+
+                    <option>${tag}</option>
+                </#list>
+            </select>
+
+        </#if>
+            <button bind-click="saveTags">save tags</button>
+        </div>
+    </div>
     <header class="post-header">
         <h1 class="post-title">${md.name}</h1>
 
         <p class="post-meta">${md.lastModifiedTime}</p>
+    <#if md.tags?size?string != "0">
+        <#list md.tags as tag>
+            <a href="/blog?tagName=${tag}">${tag}</a>
+            <#if tag_index == 0>
+                <#assign tagsString = tagsString + tag>
+            <#else>
+                <#assign tagsString = tagsString +";"+ tag>
+            </#if>
+        </#list>
+    </#if>
     </header>
     <table-contents-element></table-contents-element>
     <marked-element>${md.source}</marked-element>
+
+    <div>
+    <#if md.preNode??&&md.preNode.name??>
+        <<<a href="/blog/posts/${md.preNode.name}">${md.preNode.name}</a>
+    </#if>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+    <#if md.nextNode??&&md.nextNode.name??>
+        <a href="/blog/posts/${md.nextNode.name}">${md.nextNode.name}</a>>>
+    </#if>
+    </div>
 </div>
 
 <div class="editor">
     <div class="nav-editor">
         <input class="title-nav-editor">
-        <button class="reset">
+        <button class="reset" bind-click="resetEditor">
             reset
         </button>
-        <button class="save">
+        <button class="save" bind-click="saveEditor">
             save
         </button>
-        <button class="close">
+        <button class="close" bind-click="closeEditor">
             close
         </button>
     </div>
@@ -133,11 +167,16 @@
     </div>
 </div>
 <script>
-    $(function(){
-        require(["css!pages/blog/blog","css!pages/blog/highlight-default","wc!marked-element.html"],function(str1,str2){
-
-        })
-    })
+    var initialMdSource = "${md.source}",
+    originalName = "${md.name}",
+    tagsString = "${tagsString}";
+    require([
+                "wc!webcomponents/marked-element/marked-element", "wc!webcomponents/table-contents-element",
+                "js/pages/blog/post"
+            ],
+            function (ele1, ele2, page) {
+                page.init(initialMdSource, originalName, tagsString);
+            })
 </script>
 
 <#include "/common/foot.ftl">

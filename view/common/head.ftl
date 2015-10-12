@@ -39,7 +39,11 @@
                 css: "bower_components/require-css/css",
                 wc:"bower_components/require-webcomponents/webcomponents",
                 jquery:"bower_components/jquery/dist/jquery.min",
-                niceScroll:"bower_components/jquery.nicescroll/dist/jquery.nicescroll.min"
+                niceScroll:"bower_components/jquery.nicescroll/dist/jquery.nicescroll.min",
+                toastr:"bower_components/toastr/toastr.min"
+            },
+            "shim": {
+                "niceScroll"  : ["jquery"]
             }
 
         });

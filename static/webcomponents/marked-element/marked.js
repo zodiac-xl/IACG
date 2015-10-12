@@ -77,6 +77,7 @@
     block.gfm = merge({}, block.normal, {
         fences: /^ *(`{3,}|~{3,})[ \.]*(\S+)? *\n([\s\S]*?)\s*\1 *(?:\n+|$)/,
         paragraph: /^/,
+        //zodiac custom
         //heading: /^ *(#{1,6}) +([^\n]+?) *#* *(?:\n+|$)/
         heading: /^(#{1,6})([^\n]+?) *#* *(?:\n+|$)/ //支持macdown header 写法
     });
@@ -988,7 +989,11 @@
                     this.token.text);
             }
             case 'code': {
-                return this.renderer.code(this.token.text,
+                //zodiac custom
+                // this.token.text
+                //to
+                //this.token.text.replace(/[\n]*$/g,"")
+                return this.renderer.code(this.token.text.replace(/[\n]*$/g,""),
                     this.token.lang,
                     this.token.escaped);
             }
@@ -1016,9 +1021,10 @@
                     row = this.token.cells[i];
 
                     cell = '';
-                    for (j = 0; j < row.length; j++) {
+                    //zodiac custom
+                    for (j = 0; j < this.token.header.length; j++) {
                         cell += this.renderer.tablecell(
-                            this.inline.output(row[j]),
+                            this.inline.output(row[j]||""),
                             { header: false, align: this.token.align[j] }
                         );
                     }
@@ -1273,13 +1279,8 @@
 
     marked.parse = marked;
 
-    if (typeof module !== 'undefined' && typeof exports === 'object') {
-        module.exports = marked;
-    } else if (typeof define === 'function' && define.amd) {
-        define(function() { return marked; });
-    } else {
-        this.marked = marked;
-    }
+
+    this.marked = marked;
 
 }).call(function() {
         return this || (typeof window !== 'undefined' ? window : global);

@@ -21,6 +21,7 @@
     "require-css": "~0.1.8",
     "require": "*",
     "text": "requirejs/text#~2.0.14",
-    "require-webcomponents": "*"
+    "require-webcomponents": "*",
+    "marked-element": "PolymerElements/marked-element#~1.1.1"
   }
 }
