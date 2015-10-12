@@ -2,7 +2,7 @@ module.exports = {
   "postsTagsTree": {
     "网络": [{
       "name": "200（form cache） 304",
-      "tags": ["网络", "ajax"],
+      "tags": ["网络"],
       "lastModifiedTime": "2015-10-10T07:19:34.811Z"
     }, {
       "name": "URI",
@@ -19,23 +19,6 @@ module.exports = {
     }, {
       "name": "离线应用和客户端存储",
       "tags": ["网络"],
-      "lastModifiedTime": "2015-10-10 2:32:41 PM"
-    }],
-    "ajax": [{
-      "name": "200（form cache） 304",
-      "tags": ["网络", "ajax"],
-      "lastModifiedTime": "2015-10-10T07:19:34.811Z"
-    }, {
-      "name": "Fetch API",
-      "tags": ["ajax"],
-      "lastModifiedTime": "2015-10-12T02:35:09.735Z"
-    }, {
-      "name": "web通信",
-      "tags": ["网络", "ajax"],
-      "lastModifiedTime": "2015-10-10 2:32:41 PM"
-    }, {
-      "name": "使用FormData对象",
-      "tags": ["javaScript", "ajax"],
       "lastModifiedTime": "2015-10-10 2:32:41 PM"
     }],
     "chrome": [{
@@ -57,6 +40,19 @@ module.exports = {
     }, {
       "name": "ConsoleAPI",
       "tags": ["chrome"],
+      "lastModifiedTime": "2015-10-10 2:32:41 PM"
+    }],
+    "ajax": [{
+      "name": "Fetch API",
+      "tags": ["ajax"],
+      "lastModifiedTime": "2015-10-12T02:35:09.735Z"
+    }, {
+      "name": "web通信",
+      "tags": ["网络", "ajax"],
+      "lastModifiedTime": "2015-10-10 2:32:41 PM"
+    }, {
+      "name": "使用FormData对象",
+      "tags": ["javaScript", "ajax"],
       "lastModifiedTime": "2015-10-10 2:32:41 PM"
     }],
     "gulp": [{
