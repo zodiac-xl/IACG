@@ -19,6 +19,7 @@ import pathExists       from 'path-exists';
 
 
 import esformatter      from 'esformatter';//代码格式化
+import dateformat       from 'dateformat'
 
 
 let blog = koaRouter();
@@ -203,7 +204,7 @@ blog
             postsTree.push({
                 "name": name,
                 "tags": [],
-                "lastModifiedTime": new Date()
+                "lastModifiedTime": dateFormat(new Date(), "yyyy-mm-dd h:MM:ss TT")
             });
         } else {
             thisNode = findNodeByFileName(originalName, postsTree);
@@ -219,7 +220,7 @@ blog
                     fs.closeSync(fd);
                 });
             });
-            thisNode["lastModifiedTime"] = new Date();
+            thisNode["lastModifiedTime"] = dateFormat(new Date(), "yyyy-mm-dd h:MM:ss TT");
             thisNode["name"] = name;
             postsTree[thisNode.index] = thisNode;
         }
@@ -234,6 +235,9 @@ blog
         fileName = this.params.name,
         thisNode = findNodeByFileName(fileName, postsTree);
         postsTree[thisNode.index].tags = JSON.parse(data.tags);
+        _.forEach(postsTree, function (item, i) {
+            delete postsTree[i].index;
+        });
         updatePostsTree(postsTree);
         updatePostsTagsTree(postsTree);
         return this.jsonResp(200, {message: "done"});
