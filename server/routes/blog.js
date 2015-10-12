@@ -61,6 +61,7 @@ function findNodeByFileName(name, postsTree) {
 function updatePostsTree(postsTree) {
     var data = esformatter.format("module.exports=" + JSON.stringify({"postsTree": postsTree}));
     if (/\w/gm.test(data)) {
+        console.log(data);
         fs.writeFile(postsTreePath, data, function (err) {
             if (err) throw err;
         });
