@@ -19,7 +19,7 @@ import pathExists       from 'path-exists';
 
 
 import esformatter      from 'esformatter';//代码格式化
-import dateformat       from 'dateformat'
+import dateFormat       from 'dateformat'
 
 
 let blog = koaRouter();

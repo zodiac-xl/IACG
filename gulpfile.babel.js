@@ -29,7 +29,7 @@ import config           from 'config';
 
 //
 import md5              from 'md5'
-import dateformat       from 'dateformat'
+import dateFormat       from 'dateformat'
 
 
 let __root = (dir) => path.join("./", dir);
