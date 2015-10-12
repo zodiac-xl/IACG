@@ -118,7 +118,7 @@ blog
         prePage = pageIndex ? ("/blog?page=" + (pageIndex - 1) + tagQuery) : "";
         nextPage = ((newPostsTree.length - 1) >= (pageIndex + 1)) ? ("/blog?page=" + (pageIndex + 1) + tagQuery) : "";
         if (postsTree) {
-            this.body = this.fm.renderSync("pages/blog/index.ftl", {
+            this.body = this.fm.renderSync("pages/blog/index.ftl", _.extend({
                 title: pageTitle,
                 posts: newPostsTree[pageIndex],
                 totalSize: totalSize,
@@ -126,7 +126,7 @@ blog
                 tags: tags,
                 prePage: prePage,
                 nextPage: nextPage
-            });
+            },this.ftlCommon));
         } else {
             this.redirect('/404');
         }
@@ -141,7 +141,7 @@ blog
         if (pathExists.sync(mdPath)) {
             var mdSource = encodeURIComponent(fs.readFileSync(mdPath).toString('utf-8')),
             thisNode = findNodeByFileName(fileName, postsTree);
-            this.body = this.fm.renderSync("pages/blog/post.ftl", {
+            this.body = this.fm.renderSync("pages/blog/post.ftl",  _.extend({
                 md: {
                     preNode: postsTree[thisNode.index * 1 - 1] || {},
                     nextNode: postsTree[thisNode.index * 1 + 1] || {},
@@ -151,7 +151,7 @@ blog
                     lastModifiedTime: thisNode.lastModifiedTime
                 },
                 tags: tags
-            });
+            },this.ftlCommon));
         } else {
             this.redirect('/404');
         }

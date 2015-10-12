@@ -47,6 +47,14 @@ app.use(koaProxy(config.proxy));
 // serve static files
 app.use(koaStatic(config.path.static));
 
+// ftl basePath
+app.use(function*(next) {
+    this.ftlCommon = {
+        ftlBasePath:config.path.view
+    };
+    yield next;
+});
+
 // get env
 app.use(function*(next) {
     this.env = app.env;
